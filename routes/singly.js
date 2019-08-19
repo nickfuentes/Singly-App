@@ -5,8 +5,12 @@ const SALT_ROUNDS = 10
 const session = require('express-session')
 
 // GET gets all the blogs
-router.get('/', (req, res) => {
-    res.send("Testing!")
+router.get('/', (req,res,next) => {
+    res.send("Welcome to the home page!`")
+})
+
+router.get('/payment', (req, res, next) => {
+        res.render('index', { });
 })
 
 // POST the register information to database
