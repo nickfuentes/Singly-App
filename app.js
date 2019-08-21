@@ -9,6 +9,7 @@ const mustacheExpress = require("mustache-express")
 const VIEWS_PATH = path.join(__dirname, '/views')
 const singlyRouter = require('./routes/singly')
 
+
 const indexRouter = require('./routes');
 const usersRouter = require('./routes/users');
 
@@ -22,7 +23,7 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
-app.use("/css", express.static(__dirname + '/css'))
+// app.use("/css", express.static(__dirname + '/css'))
 app.use('/', singlyRouter)
 app.use(express.static(path.join(__dirname, 'public')))
 
