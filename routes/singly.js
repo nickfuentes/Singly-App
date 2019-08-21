@@ -5,19 +5,16 @@ const SALT_ROUNDS = 10
 
 const models = require('../models')
 
-// GET gets all the blogs
-router.get('/', (req, res, next) => {
-<<<<<<< HEAD
-    res.send("Welcome to the home page!`")
+// GET Pulls up the home page
+router.get('/', (req, res) => {
     console.log(req.session.teacher.teacherId)
     console.log(req.session.teacher.username)
-=======
-    res.render("homepage")
->>>>>>> master
+    res.render('homepage')
 })
 
-router.get('/payment', (req, res, next) => {
-    res.render('payment', {});
+// GET Pulls the payment view 
+router.get('/payment', (req, res) => {
+    res.render('payment');
 })
 
 // POST the register information to database
@@ -25,10 +22,17 @@ router.get('/register', (req, res) => {
     res.render('register')
 })
 
+// GET Pulls the view of the login-user from
+router.get('/login', (req, res) => {
+    res.render('login')
+})
+
+// GET Pulls the view for the teacher-register form
 router.get('/register/teacher-register', (req, res) => {
     res.render('teacher-register')
 })
 
+//POST Puts the teacher into the database
 router.post('/register/teacher-register', async (req, res) => {
     let username = req.body.username
     let password = req.body.password
@@ -57,7 +61,7 @@ router.post('/register/teacher-register', async (req, res) => {
 
                 let savedTeacher = await teacher.save()
                 if (savedTeacher != null) {
-                    res.redirect('/login')
+                    res.redirect('/login-teacher')
                 } else {
                     res.render('teacher-register', { message: "User already exists" })
                 }
@@ -71,75 +75,42 @@ router.post('/register/teacher-register', async (req, res) => {
 
 })
 
-// GET shows the login form
-router.get('/login', (req, res) => {
-    res.render('login')
-})
-
-router.get('/login-teacher',(req,res) => {
+// GET Pulls the view of the login-teacher form
+router.get('/login-teacher', (req, res) => {
     res.render('login-teacher')
 })
 
-router.post('/login-teacher', async (req,res) => {
+// POST Logs the teacher in to home page
+router.post('/login-teacher', async (req, res) => {
     let username = req.body.username
     let password = req.body.password
 
     let teacher = await models.Teacher.findOne({
         where: {
-            username:username
+            username: username
         }
     })
 
-    if(teacher != null) {
+    if (teacher != null) {
 
-        bcrypt.compare(password,teacher.password,(error,result) => {
-            if(result) {
+        bcrypt.compare(password, teacher.password, (error, result) => {
+            if (result) {
                 //create session
-                if(req.session) {
+                if (req.session) {
                     req.session.teacher = {
                         teacherId: teacher.id,
                         username: teacher.username
                     }
-
                     res.redirect('/')
                 }
             } else {
-                res.render('login-teacher',{message:'Incorrect username or password'})
+                res.render('login-teacher', { message: 'Incorrect username or password' })
             }
         })
     } else { //if the user is null
-        res.render('login-teacher',{message:'Incorrect username or password'})
+        res.render('login-teacher', { message: 'Incorrect username or password' })
     }
 
 })
-
-// POST logins user to app
-router.post('/login', (req, res) => {
-
-    let username = req.body.username
-    let password = req.body.password
-
-    db.oneOrNone('SELECT userid, username, password FROM users WHERE username = $1', [username])
-        .then((user) => {
-            if (user) {
-                bcrypt.compare(password, user.password).then(function (result) {
-                    if (result) {
-                        if (req.session) {
-                            req.session.user = {
-                                userid: user.userid,
-                                username: user.username
-                            }
-                        }
-                        res.redirect('/my-blogs')
-                    } else {
-                        res.send('render the same page and tell the user that credentials are wrong')
-                    }
-                })
-            } else {
-                res.render('login', { message: "Invalid username or password!" })
-            }
-        })
-})
-
 
 module.exports = router
