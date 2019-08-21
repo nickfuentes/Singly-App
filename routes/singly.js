@@ -3,6 +3,7 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
 const session = require('express-session')
+const models = require('../models')
 
 // GET gets all the blogs
 router.get('/', (req, res, next) => {
@@ -16,6 +17,52 @@ router.get('/payment', (req, res, next) => {
 // POST the register information to database
 router.get('/register', (req, res) => {
     res.render('register')
+})
+
+router.get('/register/teacher-register',(req,res) => {
+    res.render('teacher-register')
+})
+
+router.post('/register/teacher-register',async (req,res) => {
+    let username = req.body.username
+    let password = req.body.password
+    let location = req.body.location
+    let experience = req.body.experience
+    let calendlyUrl = req.body.calendlyUrl
+
+    let persistedUser = await models.Teacher.findOne({
+        where: {
+            username:username
+        }
+    })
+
+    if(persistedUser == null) {
+        bcrypt.hash(password,SALT_ROUNDS, async (error,hash) => {
+            if(error) {
+                res.render('teacher-register',{message:'Error creating user'})
+            } else {
+                let teacher = models.Teacher.build({
+                    username:username,
+                    password:hash,
+                    location:location,
+                    yearsExperience:experience,
+                    calendlyUrl:calendlyUrl
+                })
+
+                let savedTeacher = await teacher.save()
+                if(savedTeacher != null) {
+                    res.redirect('/login')
+                } else {
+                    res.render('teacher-register',{message: "User already exists"})
+                }
+
+            }
+        })   
+        
+    } else {
+        res.render('teacher-register',{message: "User already exists"})
+    }
+
 })
 
 // POST the user username and password to users database with bcrypt
