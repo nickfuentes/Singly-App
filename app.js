@@ -47,6 +47,9 @@ app.use(function(req, res, next) {
     res.render('error');
   });
 
+let message = ("b" + "a" + + "a" + "a" + "s").toLowerCase()
+console.log(message)
+
 app.listen(3000, () => {
     console.log("Hey the server is running...")
 })
