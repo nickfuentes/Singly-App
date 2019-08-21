@@ -2,12 +2,18 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
-const session = require('express-session')
+
 const models = require('../models')
 
 // GET gets all the blogs
 router.get('/', (req, res, next) => {
+<<<<<<< HEAD
+    res.send("Welcome to the home page!`")
+    console.log(req.session.teacher.teacherId)
+    console.log(req.session.teacher.username)
+=======
     res.render("homepage")
+>>>>>>> master
 })
 
 router.get('/payment', (req, res, next) => {
@@ -65,30 +71,46 @@ router.post('/register/teacher-register', async (req, res) => {
 
 })
 
-// POST the user username and password to users database with bcrypt
-router.post('/register', (req, res) => {
-
-    let username = req.body.username
-    let password = req.body.password
-
-    db.oneOrNone('SELECT userid FROM users WHERE username = $1', [username])
-        .then((user) => {
-            if (user) {
-                res.render('register', { message: "User name already exists!" })
-            } else {
-                bcrypt.hash(password, SALT_ROUNDS).then(function (hash) {
-                    db.none('INSERT INTO users(username, password) VALUES($1, $2)', [username, hash])
-                        .then(() => {
-                            res.redirect('/login')
-                        })
-                })
-            }
-        })
-})
-
 // GET shows the login form
 router.get('/login', (req, res) => {
     res.render('login')
+})
+
+router.get('/login-teacher',(req,res) => {
+    res.render('login-teacher')
+})
+
+router.post('/login-teacher', async (req,res) => {
+    let username = req.body.username
+    let password = req.body.password
+
+    let teacher = await models.Teacher.findOne({
+        where: {
+            username:username
+        }
+    })
+
+    if(teacher != null) {
+
+        bcrypt.compare(password,teacher.password,(error,result) => {
+            if(result) {
+                //create session
+                if(req.session) {
+                    req.session.teacher = {
+                        teacherId: teacher.id,
+                        username: teacher.username
+                    }
+
+                    res.redirect('/')
+                }
+            } else {
+                res.render('login-teacher',{message:'Incorrect username or password'})
+            }
+        })
+    } else { //if the user is null
+        res.render('login-teacher',{message:'Incorrect username or password'})
+    }
+
 })
 
 // POST logins user to app
