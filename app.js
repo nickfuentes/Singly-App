@@ -8,6 +8,7 @@ const path = require('path')
 const mustacheExpress = require("mustache-express")
 const VIEWS_PATH = path.join(__dirname, '/views')
 const singlyRouter = require('./routes/singly')
+const session = require('express-session')
 
 
 const indexRouter = require('./routes');
@@ -17,6 +18,12 @@ app.engine("mustache", mustacheExpress(VIEWS_PATH + '/partials', '.mustache'))
 
 app.set("views", VIEWS_PATH)
 app.set("view engine", "mustache")
+
+app.use(session({
+  secret: 'nakatatlf',
+  resave: true,
+  saveUninitialized: false
+}))
 
 app.use(cors())
 app.use(logger('dev'))
