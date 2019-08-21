@@ -7,8 +7,6 @@ const models = require('../models')
 
 // GET Pulls up the home page
 router.get('/', (req, res) => {
-    console.log(req.session.teacher.teacherId)
-    console.log(req.session.teacher.username)
     res.render('homepage')
 })
 
@@ -17,14 +15,84 @@ router.get('/payment', (req, res) => {
     res.render('payment');
 })
 
-// POST the register information to database
+// POST Pulls the view for the register page
 router.get('/register', (req, res) => {
     res.render('register')
 })
 
-// GET Pulls the view of the login-user from
+//POST Puts the user into the database
+router.post('/register', async (req, res) => {
+    let username = req.body.username
+    let password = req.body.password
+
+    let persistedUser = await models.User.findOne({
+        where: {
+            username: username
+        }
+    })
+
+    if (persistedUser == null) {
+        bcrypt.hash(password, SALT_ROUNDS, async (error, hash) => {
+            if (error) {
+                res.render('register', { message: 'Error creating user' })
+            } else {
+                let user = models.User.build({
+                    username: username,
+                    password: hash
+                })
+
+                let savedUser = await user.save()
+                if (savedUser != null) {
+                    res.redirect('/login')
+                } else {
+                    res.render('register', { message: "User already exists" })
+                }
+
+            }
+        })
+
+    } else {
+        res.render('register', { message: "User already exists" })
+    }
+
+})
+
+// GET Pulls the view of the login-user form
 router.get('/login', (req, res) => {
     res.render('login')
+})
+
+// POST Logs the user into home page
+router.post('/login', async (req, res) => {
+    let username = req.body.username
+    let password = req.body.password
+
+    let user = await models.User.findOne({
+        where: {
+            username: username
+        }
+    })
+
+    if (user != null) {
+
+        bcrypt.compare(password, user.password, (error, result) => {
+            if (result) {
+                //create session
+                if (req.session) {
+                    req.session.user = {
+                        userId: user.id,
+                        username: user.username
+                    }
+                    res.redirect('/')
+                }
+            } else {
+                res.render('login', { message: 'Incorrect username or password' })
+            }
+        })
+    } else { //if the user is null
+        res.render('login', { message: 'Incorrect username or password' })
+    }
+
 })
 
 // GET Pulls the view for the teacher-register form
@@ -80,7 +148,7 @@ router.get('/login-teacher', (req, res) => {
     res.render('login-teacher')
 })
 
-// POST Logs the teacher in to home page
+// POST Logs the teacher into home page
 router.post('/login-teacher', async (req, res) => {
     let username = req.body.username
     let password = req.body.password
