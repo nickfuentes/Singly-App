@@ -7,9 +7,13 @@ const models = require('../models')
 
 // GET gets all the blogs
 router.get('/', (req, res, next) => {
+<<<<<<< HEAD
     res.send("Welcome to the home page!`")
     console.log(req.session.teacher.teacherId)
     console.log(req.session.teacher.username)
+=======
+    res.render("homepage")
+>>>>>>> master
 })
 
 router.get('/payment', (req, res, next) => {
@@ -21,11 +25,11 @@ router.get('/register', (req, res) => {
     res.render('register')
 })
 
-router.get('/register/teacher-register',(req,res) => {
+router.get('/register/teacher-register', (req, res) => {
     res.render('teacher-register')
 })
 
-router.post('/register/teacher-register',async (req,res) => {
+router.post('/register/teacher-register', async (req, res) => {
     let username = req.body.username
     let password = req.body.password
     let location = req.body.location
@@ -34,35 +38,35 @@ router.post('/register/teacher-register',async (req,res) => {
 
     let persistedUser = await models.Teacher.findOne({
         where: {
-            username:username
+            username: username
         }
     })
 
-    if(persistedUser == null) {
-        bcrypt.hash(password,SALT_ROUNDS, async (error,hash) => {
-            if(error) {
-                res.render('teacher-register',{message:'Error creating user'})
+    if (persistedUser == null) {
+        bcrypt.hash(password, SALT_ROUNDS, async (error, hash) => {
+            if (error) {
+                res.render('teacher-register', { message: 'Error creating user' })
             } else {
                 let teacher = models.Teacher.build({
-                    username:username,
-                    password:hash,
-                    location:location,
-                    yearsExperience:experience,
-                    calendlyUrl:calendlyUrl
+                    username: username,
+                    password: hash,
+                    location: location,
+                    yearsExperience: experience,
+                    calendlyUrl: calendlyUrl
                 })
 
                 let savedTeacher = await teacher.save()
-                if(savedTeacher != null) {
+                if (savedTeacher != null) {
                     res.redirect('/login')
                 } else {
-                    res.render('teacher-register',{message: "User already exists"})
+                    res.render('teacher-register', { message: "User already exists" })
                 }
 
             }
-        })   
-        
+        })
+
     } else {
-        res.render('teacher-register',{message: "User already exists"})
+        res.render('teacher-register', { message: "User already exists" })
     }
 
 })
