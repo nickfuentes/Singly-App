@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
+<<<<<<< HEAD
 const multer = require('multer')
 const path = require('path')
 const storage = multer.diskStorage(
@@ -15,6 +16,8 @@ const storage = multer.diskStorage(
   }
 );
 const upload = multer({storage: storage})
+=======
+>>>>>>> e9f02ba5b919c77e86629183849c91ae5ee62b8a
 
 const models = require('../models')
 
@@ -114,7 +117,11 @@ router.get('/register/teacher-register', (req, res) => {
 })
 
 //POST Puts the teacher into the database
+<<<<<<< HEAD
 router.post('/register/teacher-register', upload.single('photo'), async (req, res) => {
+=======
+router.post('/register/teacher-register', async (req, res) => {
+>>>>>>> e9f02ba5b919c77e86629183849c91ae5ee62b8a
     let username = req.body.username
     let password = req.body.password
     let location = req.body.location
