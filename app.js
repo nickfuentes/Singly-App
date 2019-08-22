@@ -8,6 +8,21 @@ const path = require('path')
 const mustacheExpress = require("mustache-express")
 const VIEWS_PATH = path.join(__dirname, '/views')
 const singlyRouter = require('./routes/singly')
+const session = require('express-session')
+
+const multer = require('multer')
+const storage = multer.diskStorage(
+  {
+      destination: function (req, file, cb) {
+          cb(null, __dirname + '/uploads/images')
+        },
+      filename: function ( req, file, cb ) {
+          cb( null, req.body.username + '-' + Date.now() + '-' + file.originalname)
+      }
+  }
+);
+const upload = multer({storage: storage})
+
 
 
 const indexRouter = require('./routes');
@@ -18,6 +33,12 @@ app.engine("mustache", mustacheExpress(VIEWS_PATH + '/partials', '.mustache'))
 app.set("views", VIEWS_PATH)
 app.set("view engine", "mustache")
 
+app.use(session({
+  secret: 'nakatatlf',
+  resave: true,
+  saveUninitialized: false
+}))
+
 app.use(cors())
 app.use(logger('dev'))
 app.use(express.json())
@@ -26,6 +47,7 @@ app.use(express.urlencoded({ extended: false }))
 // app.use("/css", express.static(__dirname + '/css'))
 app.use('/', singlyRouter)
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/uploads', express.static('uploads'))
 
 //app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -48,8 +70,6 @@ app.use(function(req, res, next) {
     res.render('error');
   });
 
-let message = ("b" + "a" + + "a" + "a" + "s").toLowerCase()
-console.log(message)
 
 app.listen(3000, () => {
     console.log("Hey the server is running...")

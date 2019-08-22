@@ -5,10 +5,12 @@ module.exports = (sequelize, DataTypes) => {
     location: DataTypes.STRING,
     yearsExperience: DataTypes.INTEGER,
     password: DataTypes.STRING,
-    calendlyUrl: DataTypes.STRING
+    calendlyUrl: DataTypes.STRING,
+    imageurl: DataTypes.STRING,
+    bio:DataTypes.STRING
   }, {});
   Teacher.associate = function(models) {
-    // associations can be defined here
+    models.Teacher.hasMany(models.Genre,{as:'genres',foreignKey:'teacherId'})
   };
   return Teacher;
 };
