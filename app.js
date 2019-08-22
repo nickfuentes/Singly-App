@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require("express");
 const createError = require("http-errors");
 const cookieParser = require("cookie-parser");
@@ -27,6 +28,40 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+=======
+const express = require("express")
+const createError = require('http-errors')
+const cookieParser = require('cookie-parser')
+const logger = require('morgan')
+const cors = require('cors')
+const app = express()
+const path = require('path')
+const mustacheExpress = require("mustache-express")
+const VIEWS_PATH = path.join(__dirname, '/views')
+const singlyRouter = require('./routes/singly')
+const session = require('express-session')
+
+
+const indexRouter = require('./routes');
+const usersRouter = require('./routes/users');
+
+app.engine("mustache", mustacheExpress(VIEWS_PATH + '/partials', '.mustache'))
+
+app.set("views", VIEWS_PATH)
+app.set("view engine", "mustache")
+
+app.use(session({
+  secret: 'nakatatlf',
+  resave: true,
+  saveUninitialized: false
+}))
+
+app.use(cors())
+app.use(logger('dev'))
+app.use(express.json())
+app.use(cookieParser())
+app.use(express.urlencoded({ extended: false }))
+>>>>>>> master
 // app.use("/css", express.static(__dirname + '/css'))
 app.use("/", singlyRouter);
 app.use(express.static(path.join(__dirname, "public")));
