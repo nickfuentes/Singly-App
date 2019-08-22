@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     yearsExperience: DataTypes.INTEGER,
     password: DataTypes.STRING,
     calendlyUrl: DataTypes.STRING,
+    imageurl: DataTypes.STRING,
     bio:DataTypes.STRING
   }, {});
   Teacher.associate = function(models) {

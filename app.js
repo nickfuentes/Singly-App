@@ -15,6 +15,20 @@ const config = require("./config");
 const mediasoup = require("mediasoup");
 const port = config.server.port;
 
+const multer = require('multer')
+const storage = multer.diskStorage(
+  {
+      destination: function (req, file, cb) {
+          cb(null, __dirname + '/uploads/images')
+        },
+      filename: function ( req, file, cb ) {
+          cb( null, req.body.username + '-' + Date.now() + '-' + file.originalname)
+      }
+  }
+);
+const upload = multer({storage: storage})
+
+
 
 const indexRouter = require('./routes');
 const usersRouter = require('./routes/users');
@@ -37,8 +51,10 @@ app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 
 // app.use("/css", express.static(__dirname + '/css'))
-app.use("/", singlyRouter);
-app.use(express.static(path.join(__dirname, "public")));
+
+app.use('/', singlyRouter)
+app.use(express.static(path.join(__dirname, 'public')))
+app.use('/uploads', express.static('uploads'))
 
 //app.use('/', indexRouter);
 app.use("/users", usersRouter);

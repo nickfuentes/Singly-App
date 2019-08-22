@@ -2,6 +2,19 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
+const multer = require('multer')
+const path = require('path')
+const storage = multer.diskStorage(
+  {
+      destination: function (req, file, cb) {
+          cb(null, __dirname + '/../uploads/images')
+        },
+      filename: function ( req, file, cb ) {
+          cb( null, req.body.username + '-' + Date.now() + '-' + file.originalname)
+      }
+  }
+);
+const upload = multer({storage: storage})
 
 const models = require('../models')
 
@@ -112,13 +125,17 @@ router.get('/register/teacher-register', (req, res) => {
 })
 
 //POST Puts the teacher into the database
-router.post('/register/teacher-register', async (req, res) => {
+router.post('/register/teacher-register', upload.single('photo'), async (req, res) => {
     let username = req.body.username
     let password = req.body.password
     let location = req.body.location
     let experience = req.body.experience
     let calendlyUrl = req.body.calendlyUrl
-
+    let imageurl = path.join(__dirname + '/../uploads/images/' + req.file.filename) 
+    /*if(req.file) {
+        imageurl = req.file.filename
+    }*/
+    console.log("First console log in POST teacher reg", imageurl)
     let persistedUser = await models.Teacher.findOne({
         where: {
             username: username
@@ -135,10 +152,13 @@ router.post('/register/teacher-register', async (req, res) => {
                     password: hash,
                     location: location,
                     yearsExperience: experience,
+                    imageurl: path.join(__dirname + '/../uploads/images/' + req.file.filename),
                     calendlyUrl: calendlyUrl
                 })
+            
 
                 let savedTeacher = await teacher.save()
+                console.log("Second console log POST teacher reg", savedTeacher.dataValues.imageurl)
                 if (savedTeacher != null) {
                     res.redirect('/login-teacher')
                 } else {
