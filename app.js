@@ -9,7 +9,6 @@ const mustacheExpress = require("mustache-express")
 const VIEWS_PATH = path.join(__dirname, '/views')
 const singlyRouter = require('./routes/singly')
 const session = require('express-session')
-<<<<<<< HEAD
 
 const multer = require('multer')
 const storage = multer.diskStorage(
@@ -24,8 +23,6 @@ const storage = multer.diskStorage(
 );
 const upload = multer({storage: storage})
 
-=======
->>>>>>> e9f02ba5b919c77e86629183849c91ae5ee62b8a
 
 
 const indexRouter = require('./routes');
