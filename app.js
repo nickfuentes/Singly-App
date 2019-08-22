@@ -195,17 +195,6 @@ io.on("connection", socket => {
   };
 });
 
-// Adding a route to the video conferencing
-
-app.get('/video-conference', (req,res) => {
-  let roomId = req.query.roomId
-  let peerName = req.query.userId
-  res.render("video-conference", {roomId: roomId, peerName: peerName})
-  
-  // add a button <a href='/video-conference/roomId={{roomId}}&userid={{userId}}'></a>
-
-})
-
 // OVERALL FRONTEND OPERATIONS
 
 app.listen(3000, () => {

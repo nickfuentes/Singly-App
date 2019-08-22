@@ -10,6 +10,17 @@ router.get('/', (req, res) => {
     res.render('homepage')
 })
 
+// Adding a route to the video conferencing
+
+router.get('/video-conference', (req,res) => {
+    let roomId = req.query.roomId
+    let peerName = req.query.userId
+    res.render("video-conference", {roomId: roomId, peerName: peerName})
+    
+    // add a button <a href='/video-conference/roomId={{roomId}}&userid={{userId}}'></a>
+  
+})
+
 // GET Pulls the payment view 
 router.get('/payment', (req, res) => {
     res.render('payment');
