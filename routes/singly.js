@@ -21,20 +21,29 @@ const models = require('../models')
 
 // GET Pulls up the home page
 router.get('/', (req, res) => {
-    models.Teacher.findAll()
+
+    models.Teacher.findAll({
+        include: [{
+            model: models.Genre,
+            as: 'genres'
+        }]
+    })
         .then(teachers => {
+            console.log(teachers)
             res.render('homepage', { teachers: teachers })
         })
+
+    // models.Teacher.findAll()
+    //     .then(teachers => {
+    //         res.render('homepage', { teachers: teachers })
+    //     })
 })
 
-// Adding a route to the video conferencing
-
+// GET Adding a route to the video conferencing
 router.get('/video-conference', checkAuth, (req, res) => {
     let roomId = req.query.roomId
     let peerName = req.query.userId
     res.render("video-conference", { roomId: roomId, peerName: peerName })
-
-    // add a button <a href='/video-conference/roomId={{roomId}}&userid={{userId}}'></a>
 
 })
 
@@ -242,13 +251,27 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
     let teacherid = req.params.teacherid
 
     models.Teacher.findOne({
+        include: [{
+            model: models.Genre,
+            as: 'genres'
+        }],
         where: {
             id: teacherid
         }
-    }).then((teacher) => {
-        console.log(teacher)
-        res.render('teacher-profile', { teacher })
     })
+        .then(teacher => {
+            console.log(teacher)
+            res.render('teacher-profile', { teacher })
+        })
+
+    // models.Teacher.findOne({
+    //     where: {
+    //         id: teacherid
+    //     }
+    // }).then((teacher) => {
+    //     console.log(teacher)
+    //     res.render('teacher-profile', { teacher })
+    // })
 })
 
 module.exports = router
