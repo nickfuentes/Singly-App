@@ -39,7 +39,7 @@ router.get('/video-conference', checkAuth, (req, res) => {
 })
 
 // GET Pulls the payment view 
-router.get('/payment', checkAuth, (req, res) => {
+router.get('/payment', (req, res) => {
     res.render('payment');
 })
 
@@ -136,6 +136,13 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
     let experience = req.body.experience
     let calendlyUrl = req.body.calendlyUrl
     let imageurl = path.join('/../uploads/images/' + req.file.filename)
+    let rate = req.body.rate
+    let bio = req.body.bio
+    let fullBio = req.body.fullBio
+    let genre1 = req.body.genre1
+    let genre2 = req.body.genre2
+    let genre3 = req.body.genre3
+
     /*if(req.file) {
         imageurl = req.file.filename
     }*/
@@ -157,12 +164,25 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
                     location: location,
                     yearsExperience: experience,
                     imageurl: path.join('/../uploads/images/' + req.file.filename),
-                    calendlyUrl: calendlyUrl
+                    calendlyUrl: calendlyUrl,
+                    bio: bio,
+                    rate: rate,
+                    fullBio: fullBio
                 })
 
 
                 let savedTeacher = await teacher.save()
-                // console.log("Second console log POST teacher reg", savedTeacher.dataValues.imageurl)
+                    .then((savedTeacher) => {
+                        savedTeacher.id
+                        let genre = models.Genre.build({
+                            teacherId: savedTeacher.id,
+                            name: genre1,
+                            name2: genre2,
+                            name3: genre3
+                        })
+                        genre.save()
+                        return savedTeacher
+                    })
                 if (savedTeacher != null) {
                     res.redirect('/login-teacher')
                 } else {
