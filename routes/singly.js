@@ -20,8 +20,11 @@ const upload = multer({ storage: storage })
 const models = require('../models')
 
 // GET Pulls up the home page
-router.get('/', checkAuth, (req, res) => {
-    res.render('homepage')
+router.get('/', (req, res) => {
+    models.Teacher.findAll()
+        .then(teachers => {
+            res.render('homepage', { teachers: teachers })
+        })
 })
 
 // Adding a route to the video conferencing
@@ -132,7 +135,7 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
     let location = req.body.location
     let experience = req.body.experience
     let calendlyUrl = req.body.calendlyUrl
-    let imageurl = path.join(__dirname + '/../uploads/images/' + req.file.filename)
+    let imageurl = path.join('/../uploads/images/' + req.file.filename)
     /*if(req.file) {
         imageurl = req.file.filename
     }*/
@@ -153,13 +156,13 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
                     password: hash,
                     location: location,
                     yearsExperience: experience,
-                    imageurl: path.join(__dirname + '/../uploads/images/' + req.file.filename),
+                    imageurl: path.join('/../uploads/images/' + req.file.filename),
                     calendlyUrl: calendlyUrl
                 })
 
 
                 let savedTeacher = await teacher.save()
-                console.log("Second console log POST teacher reg", savedTeacher.dataValues.imageurl)
+                // console.log("Second console log POST teacher reg", savedTeacher.dataValues.imageurl)
                 if (savedTeacher != null) {
                     res.redirect('/login-teacher')
                 } else {
@@ -213,12 +216,15 @@ router.post('/login-teacher', async (req, res) => {
 
 })
 
-router.get("/teacher-profile/:blogid", (req, res) => {
+// router.get("/teacher-profile/:blogid", (req, res) => {
 
-    let techerid = req.params.teacherid
+//     let techerid = req.params.teacherid
 
+//     // findlAll is a static function 
+//     models.Teacher.findAll()
+//         .then(teachers => consoel.log(res.json(teacher)))
 
-
-})
+//     res.render('teacher-profile')
+// })
 
 module.exports = router
