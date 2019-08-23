@@ -40,10 +40,9 @@ router.get('/', (req, res) => {
 })
 
 // GET Adding a route to the video conferencing
-router.get('/video-conference', checkAuth, (req, res) => {
-    let roomId = req.query.roomId
-    let peerName = req.query.userId
-    res.render("video-conference", { roomId: roomId, peerName: peerName })
+router.get('/video-conference', (req, res) => {
+
+    res.render("video-conference")
 
 })
 
@@ -229,7 +228,7 @@ router.post('/login-teacher', async (req, res) => {
             if (result) {
                 //create session
                 if (req.session) {
-                    req.session.teacher = {
+                    req.session.user = {
                         teacherId: teacher.id,
                         username: teacher.username
                     }
@@ -250,6 +249,8 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
 
     let teacherid = req.params.teacherid
 
+    let usernamesess = req.session.user.username
+
     models.Teacher.findOne({
         include: [{
             model: models.Genre,
@@ -260,8 +261,7 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
         }
     })
         .then(teacher => {
-            console.log(teacher)
-            res.render('teacher-profile', { teacher })
+            res.render('teacher-profile', { teacher, usernamesess: usernamesess })
         })
 
     // models.Teacher.findOne({
