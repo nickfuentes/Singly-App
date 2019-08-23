@@ -4,38 +4,39 @@ const bcrypt = require('bcrypt')
 const SALT_ROUNDS = 10
 const multer = require('multer')
 const path = require('path')
+const checkAuth = require("../utils/checkAuth")
 const storage = multer.diskStorage(
-  {
-      destination: function (req, file, cb) {
-          cb(null, __dirname + '/../uploads/images')
+    {
+        destination: function (req, file, cb) {
+            cb(null, __dirname + '/../uploads/images')
         },
-      filename: function ( req, file, cb ) {
-          cb( null, req.body.username + '-' + Date.now() + '-' + file.originalname)
-      }
-  }
+        filename: function (req, file, cb) {
+            cb(null, req.body.username + '-' + Date.now() + '-' + file.originalname)
+        }
+    }
 );
-const upload = multer({storage: storage})
+const upload = multer({ storage: storage })
 
 const models = require('../models')
 
 // GET Pulls up the home page
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
     res.render('homepage')
 })
 
 // Adding a route to the video conferencing
 
-router.get('/video-conference', (req,res) => {
+router.get('/video-conference', checkAuth, (req, res) => {
     let roomId = req.query.roomId
     let peerName = req.query.userId
-    res.render("video-conference", {roomId: roomId, peerName: peerName})
-    
+    res.render("video-conference", { roomId: roomId, peerName: peerName })
+
     // add a button <a href='/video-conference/roomId={{roomId}}&userid={{userId}}'></a>
-  
+
 })
 
 // GET Pulls the payment view 
-router.get('/payment', (req, res) => {
+router.get('/payment', checkAuth, (req, res) => {
     res.render('payment');
 })
 
@@ -131,7 +132,7 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
     let location = req.body.location
     let experience = req.body.experience
     let calendlyUrl = req.body.calendlyUrl
-    let imageurl = path.join(__dirname + '/../uploads/images/' + req.file.filename) 
+    let imageurl = path.join(__dirname + '/../uploads/images/' + req.file.filename)
     /*if(req.file) {
         imageurl = req.file.filename
     }*/
@@ -155,7 +156,7 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
                     imageurl: path.join(__dirname + '/../uploads/images/' + req.file.filename),
                     calendlyUrl: calendlyUrl
                 })
-            
+
 
                 let savedTeacher = await teacher.save()
                 console.log("Second console log POST teacher reg", savedTeacher.dataValues.imageurl)
@@ -209,6 +210,14 @@ router.post('/login-teacher', async (req, res) => {
     } else { //if the user is null
         res.render('login-teacher', { message: 'Incorrect username or password' })
     }
+
+})
+
+router.get("/teacher-profile/:blogid", (req, res) => {
+
+    let techerid = req.params.teacherid
+
+
 
 })
 
