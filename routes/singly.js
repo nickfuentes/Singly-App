@@ -216,6 +216,7 @@ router.post('/login-teacher', async (req, res) => {
 
 })
 
+//GET Pulls the teaher profile view
 router.get("/teacher-profile/:teacherid", (req, res) => {
 
     let teacherid = req.params.teacherid
