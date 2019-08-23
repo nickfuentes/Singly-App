@@ -36,7 +36,7 @@
           });
 
           if (result.success) {
-            $('#checkout-message').html('<h1>Success</h1><p>Your Drop-in UI is working! Check your <a href="https://sandbox.braintreegateway.com/login">sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>');
+            $('#checkout-message').html('<h1>Payment Was A Success!</h1><p>Click on the link here to schedule lessions <a href="https://calendly.com/app/scheduled_events/user/me">Book Lessions</a>');
           } else {
             console.log(result);
             $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
