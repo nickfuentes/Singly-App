@@ -107,7 +107,13 @@ router.post('/register/teacher-register', async (req, res) => {
     let location = req.body.location
     let experience = req.body.experience
     let calendlyUrl = req.body.calendlyUrl
-
+    let rate = req.body.rate
+    let bio = req.body.bio
+    let fullBio = req.body.fullBio
+    let genre1 = req.body.genre1
+    // let genre2 = req.body.genre2
+    // let genre3 = req.body.genre3
+    
     let persistedUser = await models.Teacher.findOne({
         where: {
             username: username
@@ -124,10 +130,24 @@ router.post('/register/teacher-register', async (req, res) => {
                     password: hash,
                     location: location,
                     yearsExperience: experience,
-                    calendlyUrl: calendlyUrl
+                    calendlyUrl: calendlyUrl,
+                    bio: bio,
+                    rate: rate,
+                    fullBio: fullBio
                 })
 
                 let savedTeacher = await teacher.save()
+                .then((savedTeacher) => {
+                    savedTeacher.id
+                    let genre = models.Genre.build({
+                        teacherId: savedTeacher.id,
+                        name: genre1
+                        // name2: genre2,
+                        // name3: genre3
+                    })
+                    genre.save()
+                    return savedTeacher
+                })
                 if (savedTeacher != null) {
                     res.redirect('/login-teacher')
                 } else {
