@@ -131,6 +131,13 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
     let location = req.body.location
     let experience = req.body.experience
     let calendlyUrl = req.body.calendlyUrl
+    let rate = req.body.rate
+    let bio = req.body.bio
+    let fullBio = req.body.fullBio
+    let genre1 = req.body.genre1
+    let genre2 = req.body.genre2
+    let genre3 = req.body.genre3
+    
     let imageurl = path.join(__dirname + '/../uploads/images/' + req.file.filename) 
     /*if(req.file) {
         imageurl = req.file.filename
@@ -152,13 +159,27 @@ router.post('/register/teacher-register', upload.single('photo'), async (req, re
                     password: hash,
                     location: location,
                     yearsExperience: experience,
+                    calendlyUrl: calendlyUrl,
+                    bio: bio,
+                    rate: rate,
+                    fullBio: fullBio,
                     imageurl: path.join(__dirname + '/../uploads/images/' + req.file.filename),
                     calendlyUrl: calendlyUrl
                 })
             
 
                 let savedTeacher = await teacher.save()
-                console.log("Second console log POST teacher reg", savedTeacher.dataValues.imageurl)
+                .then((savedTeacher) => {
+                    savedTeacher.id
+                    let genre = models.Genre.build({
+                        teacherId: savedTeacher.id,
+                        name: genre1,
+                        name2: genre2,
+                        name3: genre3
+                    })
+                    genre.save()
+                    return savedTeacher
+                })
                 if (savedTeacher != null) {
                     res.redirect('/login-teacher')
                 } else {

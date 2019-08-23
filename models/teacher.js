@@ -6,8 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     yearsExperience: DataTypes.INTEGER,
     password: DataTypes.STRING,
     calendlyUrl: DataTypes.STRING,
+    bio: DataTypes.STRING,
+    rate: DataTypes.STRING,
+    fullBio: DataTypes.TEXT,
     imageurl: DataTypes.STRING,
-    bio:DataTypes.STRING
   }, {});
   Teacher.associate = function(models) {
     models.Teacher.hasMany(models.Genre,{as:'genres',foreignKey:'teacherId'})
