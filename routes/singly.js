@@ -274,4 +274,18 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
     // })
 })
 
+// POST updates the user blog by blogid
+router.get('/logout', (req, res, next) => {
+
+    if (req.session) {
+        req.session.destroy((error) => {
+            if (error) {
+                next(error)
+            } else {
+                res.redirect('/login')
+            }
+        })
+    }
+})
+
 module.exports = router
