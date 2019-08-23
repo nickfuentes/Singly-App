@@ -1,7 +1,7 @@
 # Singly 
 > Find a Vocal Coach Near You!
 
-####[Live Website]()
+[Live Website]()
 
 ## Languages and Services
 This Web Application uses [Heroku](https://www.heroku.com/), [ElephantSQL](https://www.elephantsql.com/), [PostgreSQL](https://www.postgresql.org/), [NodeJS](https://nodejs.org/en/), [Mustache Pages](https://mustache.github.io/), [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript), [CSS3](https://developer.mozilla.org/en-US/docs/Web/CSS), [HTML5](https://developer.mozilla.org/en-US/docs/Web/HTML)
