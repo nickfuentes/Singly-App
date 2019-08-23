@@ -19,6 +19,12 @@ const upload = multer({ storage: storage })
 
 const models = require('../models')
 
+// Authinticated local to hide links if user is not logged in
+router.use((req, res, next) => {
+    res.locals.authenticated = req.session.user == null ? false : true
+    next()
+})
+
 // GET Pulls up the home page
 router.get('/', (req, res) => {
 

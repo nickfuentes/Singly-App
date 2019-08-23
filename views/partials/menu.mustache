@@ -7,12 +7,15 @@
        
         <ul class="navbar-nav">
 
+{{^authenticated}}
             <li class="nav-item">
                 <a class="nav-link" href="/register">Register For Account</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/login">Login Page</a>
             </li>
+{{/authenticated}}
+
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
