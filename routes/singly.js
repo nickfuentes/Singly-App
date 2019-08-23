@@ -216,15 +216,18 @@ router.post('/login-teacher', async (req, res) => {
 
 })
 
-// router.get("/teacher-profile/:blogid", (req, res) => {
+router.get("/teacher-profile/:teacherid", (req, res) => {
 
-//     let techerid = req.params.teacherid
+    let teacherid = req.params.teacherid
 
-//     // findlAll is a static function 
-//     models.Teacher.findAll()
-//         .then(teachers => consoel.log(res.json(teacher)))
-
-//     res.render('teacher-profile')
-// })
+    models.Teacher.findOne({
+        where: {
+            id: teacherid
+        }
+    }).then((teacher) => {
+        console.log(teacher)
+        res.render('teacher-profile', { teacher })
+    })
+})
 
 module.exports = router
