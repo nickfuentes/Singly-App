@@ -250,6 +250,27 @@ router.post('/login-teacher', async (req, res) => {
 
 })
 
+//GET Search Pulls teacher profile based off name
+router.post("/search-teacher", (req, res) => {
+
+    let teacherName = req.body.teacherName
+    console.log(teacherName)
+
+    models.Teacher.findOne({
+        include: [{
+            model: models.Genre,
+            as: 'genres'
+        }],
+        where: {
+            username: teacherName
+        }
+    })
+        .then(teacher => {
+            console.log(teacher)
+            res.render('teacher-search', { teacher })
+        })
+})
+
 //GET Pulls the teaher profile view
 router.get("/teacher-profile/:teacherid", checkAuth, (req, res) => {
 
