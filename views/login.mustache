@@ -15,6 +15,12 @@
 
     <h1 class="mt-3">Student Login Page</h1>
 
+    {{#message}}
+            <div class="alert alert-danger" role="alert">
+                {{message}}
+            </div>
+    {{/message}}
+
     <form action="/login" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">User Name</label>
@@ -33,12 +39,6 @@
     <p class="mt-3">If you want to log in as a teacher, please log in by clicking <a href="/login-teacher">Teacher Login.</a></p>
     <p>Please note if you don't have a teacher account you can create one on the register page.</p>
 </div>
-        
-        {{#message}}
-            <div class="alert alert-danger" role="alert">
-                {{message}}
-            </div>
-        {{/message}}
         
     </form>
 </div>

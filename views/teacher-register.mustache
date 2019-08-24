@@ -17,6 +17,13 @@
 
      <h1 class="mt-3">Teacher Registration</h1>
 
+    {{#message}}
+        <div class="alert alert-danger" role="alert">
+            {{message}}
+        </div>
+    {{/message}}
+    
+
     <form action="/register/teacher-register" method="POST" enctype = "multipart/form-data">
         <div class="form-group">
             <label for="exampleInputEmail1">User Name</label>
@@ -111,13 +118,6 @@
         </div> 
         <button type="submit" class="btn btn-primary">Register</button>
 
-        
-        {{#message}}
-            <div class="alert alert-danger" role="alert">
-                {{message}}
-            </div>
-        {{/message}}
-        
     </form>
 </div>
 

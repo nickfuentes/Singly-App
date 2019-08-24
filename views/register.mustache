@@ -15,6 +15,13 @@
 
      <h1 class="mt-3">Student Register Page</h1>
 
+        
+    {{#message}}
+        <div class="alert alert-danger" role="alert">
+            {{message}}
+        </div>
+    {{/message}}
+
     <form action="/register" method="POST">
         <div class="form-group">
             <label for="exampleInputEmail1">User Name</label>
@@ -27,13 +34,6 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Register</button>
-
-        
-        {{#message}}
-            <div class="alert alert-danger" role="alert">
-                {{message}}
-            </div>
-        {{/message}}
         
     </form>
 
