@@ -1,5 +1,5 @@
-   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">SINGLY</a>
+   <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="/" style="font-family: 'Lobster', cursive; font-size: 35px;">Singly</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -16,9 +16,11 @@
             </li>
 {{/authenticated}}
 
+{{#authenticated}}
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
+{{/authenticated}}
         </ul>
     </div>
     </nav>

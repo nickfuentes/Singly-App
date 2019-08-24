@@ -46,14 +46,14 @@ router.get('/', (req, res) => {
 })
 
 // GET Adding a route to the video conferencing
-router.get('/video-conference', (req, res) => {
+router.get('/video-conference', checkAuth, (req, res) => {
 
     res.render("video-conference")
 
 })
 
 // GET Pulls the payment view 
-router.get('/payment', (req, res) => {
+router.get('/payment', checkAuth, (req, res) => {
     res.render('payment');
 })
 
