@@ -19,6 +19,12 @@ const upload = multer({ storage: storage })
 
 const models = require('../models')
 
+// Authinticated local to hide links if user is not logged in
+router.use((req, res, next) => {
+    res.locals.authenticated = req.session.user == null ? false : true
+    next()
+})
+
 // GET Pulls up the home page
 router.get('/', (req, res) => {
 
@@ -41,14 +47,13 @@ router.get('/', (req, res) => {
 
 // GET Adding a route to the video conferencing
 router.get('/video-conference', checkAuth, (req, res) => {
-    let roomId = req.query.roomId
-    let peerName = req.query.userId
-    res.render("video-conference", { roomId: roomId, peerName: peerName })
+
+    res.render("video-conference")
 
 })
 
 // GET Pulls the payment view 
-router.get('/payment', (req, res) => {
+router.get('/payment', checkAuth, (req, res) => {
     res.render('payment');
 })
 
@@ -229,7 +234,7 @@ router.post('/login-teacher', async (req, res) => {
             if (result) {
                 //create session
                 if (req.session) {
-                    req.session.teacher = {
+                    req.session.user = {
                         teacherId: teacher.id,
                         username: teacher.username
                     }
@@ -250,6 +255,8 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
 
     let teacherid = req.params.teacherid
 
+    let usernamesess = req.session.user.username
+
     models.Teacher.findOne({
         include: [{
             model: models.Genre,
@@ -260,8 +267,7 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
         }
     })
         .then(teacher => {
-            console.log(teacher)
-            res.render('teacher-profile', { teacher })
+            res.render('teacher-profile', { teacher, usernamesess: usernamesess })
         })
 
     // models.Teacher.findOne({
@@ -272,6 +278,20 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
     //     console.log(teacher)
     //     res.render('teacher-profile', { teacher })
     // })
+})
+
+// POST updates the user blog by blogid
+router.get('/logout', (req, res, next) => {
+
+    if (req.session) {
+        req.session.destroy((error) => {
+            if (error) {
+                next(error)
+            } else {
+                res.redirect('/login')
+            }
+        })
+    }
 })
 
 module.exports = router
