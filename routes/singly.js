@@ -251,7 +251,7 @@ router.post('/login-teacher', async (req, res) => {
 })
 
 //GET Pulls the teaher profile view
-router.get("/teacher-profile/:teacherid", (req, res) => {
+router.get("/teacher-profile/:teacherid", checkAuth, (req, res) => {
 
     let teacherid = req.params.teacherid
 
@@ -269,15 +269,6 @@ router.get("/teacher-profile/:teacherid", (req, res) => {
         .then(teacher => {
             res.render('teacher-profile', { teacher, usernamesess: usernamesess })
         })
-
-    // models.Teacher.findOne({
-    //     where: {
-    //         id: teacherid
-    //     }
-    // }).then((teacher) => {
-    //     console.log(teacher)
-    //     res.render('teacher-profile', { teacher })
-    // })
 })
 
 // POST updates the user blog by blogid
