@@ -19,6 +19,8 @@ const upload = multer({ storage: storage })
 
 const models = require('../models')
 
+const Op = require('Sequelize').Op;
+
 // Authinticated local to hide links if user is not logged in
 router.use((req, res, next) => {
     res.locals.authenticated = req.session.user == null ? false : true
@@ -268,6 +270,27 @@ router.post("/search-teacher", (req, res) => {
         .then(teacher => {
             console.log(teacher)
             res.render('teacher-search', { teacher })
+        })
+})
+
+//GET Search Pulls teacher profile based off genre
+router.post("/genre-search", (req, res) => {
+
+    let genre = req.body.genre
+    console.log(genre)
+
+    models.Teacher.findAll({
+        include: [{
+            model: models.Genre,
+            as: 'genres',
+            where: {
+                [Op.or]: [{ name: genre }, { name2: genre }, { name3: genre },]
+            }
+        }]
+    })
+        .then(teachers => {
+            console.log(teachers)
+            res.render('genre-search', { teachers: teachers })
         })
 })
 
