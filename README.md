@@ -27,5 +27,5 @@ Video Conferencing between both parties in a private video page
 ## Creators
 Jacob Bankston - [LinkedIn](https://www.linkedin.com/in/jacob-bankston/)
 Nickolas Fuentes - [LinkedIn](https://www.linkedin.com/in/nickolasfuentes/)
-Kristi Perez Beneford - [LinkedIn](https://www.linkedin.com/in/kristiperez/)
+Kristi Perez Bedford - [LinkedIn](https://www.linkedin.com/in/kristiperez/)
 Bryce Poeter - [LinkedIn](https://www.linkedin.com/in/bryce-poeter-148651186/)
