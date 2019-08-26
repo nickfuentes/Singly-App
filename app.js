@@ -13,7 +13,7 @@ const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const config = require("./config");
 const mediasoup = require("mediasoup");
-const port = config.server.port;
+const port = process.env.port || config.server.port;
 
 const multer = require('multer')
 const storage = multer.diskStorage(
@@ -219,7 +219,7 @@ app.listen(3000, () => {
 
 // OVERALL BACKEND OPERATIONS
 
-http.listen(8080, () => {
+http.listen(port, () => {
   console.log(`MediaSoup server is listening on port ${port}!`);
 });
 
