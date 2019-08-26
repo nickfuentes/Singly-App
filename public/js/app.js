@@ -133,9 +133,9 @@ function handleConsumer(consumer) {
 
       if (consumer.kind === 'video') {
         const video = document.createElement('video');
-        video.setAttribute('style', 'max-width: auto;');
         video.setAttribute('playsinline', '');
-        video.setAttribute('class', 'img-thumbnail rounded')
+        video.setAttribute('class', 'img-thumbnail')
+        video.setAttribute('style', 'max-width: auto; border-width: 5px solid white; border-radius: 20px;');
         video.srcObject = stream;
         document.getElementById('video-container').appendChild(video);
         video.play();

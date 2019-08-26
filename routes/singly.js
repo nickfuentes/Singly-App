@@ -294,7 +294,7 @@ router.post("/genre-search", (req, res) => {
         })
 })
 
-//GET Pulls the teaher profile view
+//GET Pulls the teacher profile view
 router.get("/teacher-profile/:teacherid", checkAuth, (req, res) => {
 
     let teacherid = req.params.teacherid

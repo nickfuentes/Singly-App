@@ -1,13 +1,17 @@
 <head>
 <script src="https://js.braintreegateway.com/web/dropin/1.20.0/js/dropin.min.js"></script>
 <script src="http://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  {{> header}}
 </head>
 
-<div id="dropin-wrapper">
+  {{> menu}}
+
+<div id="dropin-wrapper" class="text-center">
   <div id="checkout-message"></div>
   <div id="dropin-container"></div>
-  <button id="submit-button">Submit payment</button>
+  <button id="submit-button" class="btn btn-light">Submit payment</button>
 </div>
+
 <script>
   var button = document.querySelector('#submit-button');
   braintree.dropin.create({
@@ -36,7 +40,7 @@
           });
 
           if (result.success) {
-            $('#checkout-message').html('<h1>Payment Was A Success!</h1><p>Click on the link here to schedule lessions <a href="https://calendly.com/singly-project/lesson">Book Lessions</a>');
+            $('#checkout-message').html('<h1>Payment Was A Success!</h1><p>Click on the link here to schedule lessions <a href="https://calendly.com/singly-project/lesson">Book Lessions</a></p><br><p>Click Singly to return to the homepage!</p>');
           } else {
             console.log(result);
             $('#checkout-message').html('<h1>Error</h1><p>Check your console.</p>');
