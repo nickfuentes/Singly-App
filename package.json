@@ -15,7 +15,7 @@
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-generator": "^4.16.1",
     "express-session": "^1.16.2",
     "http-errors": "^1.7.3",
